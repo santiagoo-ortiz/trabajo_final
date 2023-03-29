@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/connection');
+const bcrypt = require("bcrypt");
 
 const User = sequelize.define('user', {
     firstName: {
@@ -24,6 +25,12 @@ const User = sequelize.define('user', {
         allowNull: false
     },
 });
+
+User.beforeCreate(async (user) => {
+    const encriptedPassword = await bcrypt.hash(user.password, 10);
+    user.password = encriptedPassword;
+  });
+
 
 User.prototype.toJSON = function () {
     const values = Object.assign({}, this.get());

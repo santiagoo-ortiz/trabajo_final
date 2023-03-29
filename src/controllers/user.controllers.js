@@ -10,13 +10,8 @@ const getAll = catchError(async(req, res) => {
 
 const create = catchError(async(req, res) => {
 
-    const {firstName, lastName, email, password, phone} = req.body
-
-    const encrypted = await bcrypt.hash(password, 10)
-
-    const result = await User.create({firstName, lastName, email, password: encrypted, phone});
+    const result = await User.create(req.body);
     return res.status(201).json(result);
-
 
 });
 
@@ -60,7 +55,7 @@ const login = catchError(async(req, res) => {
     return res.json({user, token})
 })
 
-//POST /login
+
 
 module.exports = {
     getAll,
